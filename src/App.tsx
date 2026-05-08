@@ -1,8 +1,10 @@
 import React from 'react';
+import { Button } from './components/ui/button';
 
 const App = () => (
-    <div className='text-rose-700 text-5xl'>
-        Helloo 23$2#
+    <div className="">
+        <p>hello world</p>
+        <Button>this is button</Button>
     </div>
 )
 
