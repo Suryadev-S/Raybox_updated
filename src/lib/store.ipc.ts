@@ -1,0 +1,17 @@
+import { ipcMain } from "electron"
+import { createStore } from "./ipcHandlers/createStore"
+import { checkStore } from "./ipcHandlers/checkStore"
+
+
+ipcMain.handle("create-store", createStore)
+
+ipcMain.handle("check-store", checkStore)
+
+ipcMain.handle("test", async () => {
+    console.log("this is a test handler")
+
+    // return {
+    //     success: true,
+    //     message: "handler works",
+    // }
+})

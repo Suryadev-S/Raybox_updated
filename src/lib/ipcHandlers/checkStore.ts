@@ -4,7 +4,7 @@ import { getConfigPath } from "./createStore"
 import type {
     StoreConfig,
     CheckStoreResult,
-} from "./types"
+} from "../types"
 
 export async function checkStore(): Promise<CheckStoreResult> {
     try {

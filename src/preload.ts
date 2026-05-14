@@ -4,7 +4,7 @@
 import { contextBridge, ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("store", {
-  create: () => ipcRenderer.invoke("store:create"),
-  check: () => ipcRenderer.invoke("store:check"),
-  test: () => ipcRenderer.invoke("store:test"),
+  create: () => ipcRenderer.invoke("create-store"),
+  check: () => ipcRenderer.invoke("check-store"),
+  test: () => ipcRenderer.invoke("test"),
 })

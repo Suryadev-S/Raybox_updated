@@ -4,7 +4,7 @@ import { dialog } from "electron"
 import { app } from "electron"
 
 // import { getConfigPath } from "./getStorePath"
-import type { StoreConfig } from "./types"
+import type { StoreConfig } from "../types"
 
 
 export function getConfigPath() {
@@ -24,21 +24,6 @@ export async function createStore() {
     }
 
     const selectedPath = result.filePaths[0]
-
-    // const folders = [
-    //     "originals",
-    //     "thumbnails",
-    //     "metadata",
-    //     "temp",
-    // ]
-
-    // await Promise.all(
-    //     folders.map((folder) =>
-    //         fs.mkdir(path.join(selectedPath, folder), {
-    //             recursive: true,
-    //         }),
-    //     ),
-    // )
 
     const config: StoreConfig = {
         storePath: selectedPath,

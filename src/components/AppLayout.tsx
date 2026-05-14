@@ -3,7 +3,7 @@ import { NavLink, Outlet } from "react-router-dom";
 
 const AppLayout = () => (
     <div>
-        <nav>
+        <nav className="flex gap-2">
             <NavLink to={'/'}>home</NavLink>
             <NavLink to={'/media'}>Media</NavLink>
             <NavLink to={'/butt'}>Butt</NavLink>

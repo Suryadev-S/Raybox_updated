@@ -3,7 +3,7 @@ import path from 'node:path';
 import started from 'electron-squirrel-startup';
 
 // SELF-NOTE: important to add all ipc in the main.ts
-import './lib/ipcHandlers/store.ipc'
+import './lib/store.ipc'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
