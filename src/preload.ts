@@ -8,3 +8,7 @@ contextBridge.exposeInMainWorld("store", {
   check: () => ipcRenderer.invoke("check-store"),
   test: () => ipcRenderer.invoke("test"),
 })
+
+contextBridge.exposeInMainWorld("file", {
+  identify: (filePath: string) => ipcRenderer.invoke("identify-file", filePath),
+})

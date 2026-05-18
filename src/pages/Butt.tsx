@@ -1,13 +1,6 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
 
-const Butt = () => (
-    <div>
-        <h1>Button page</h1>
-        <CreateStoreButton />
-    </div>
-);
-
 const CreateStoreButton = () => {
     const handleCreateStore = async () => {
         const result = await window.store.check()
@@ -27,4 +20,28 @@ const CreateStoreButton = () => {
         </Button>
     )
 }
+
+const IdentifyFileTypeButton = ({ pth }: { pth: string }) => {
+    const handleIdentify = async () => {
+        console.log(typeof(pth));
+        let res = await window.file.identify(pth);
+        console.log(res);
+    }
+    return (
+        <>
+            <Button onClick={handleIdentify}>
+                identify
+            </Button>
+        </>
+    )
+}
+
+const Butt = () => (
+    <div>
+        <h1>Button page</h1>
+        {/* <CreateStoreButton /> */}
+        <IdentifyFileTypeButton pth="C:\Users\vishn\Downloads\raybox.png" />
+    </div>
+);
+
 export default Butt;
