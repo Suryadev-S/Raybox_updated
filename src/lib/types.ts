@@ -19,3 +19,9 @@ export type FileTypeResult = {
     extension: string
     category: FileCategory
 }
+
+export type ThumbnailResult = {
+  success: boolean
+  outputPath?: string
+  reason?: string
+}

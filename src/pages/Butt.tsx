@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useState } from "react";
 
 const CreateStoreButton = () => {
     const handleCreateStore = async () => {
@@ -23,7 +23,7 @@ const CreateStoreButton = () => {
 
 const IdentifyFileTypeButton = ({ pth }: { pth: string }) => {
     const handleIdentify = async () => {
-        console.log(typeof(pth));
+        console.log(typeof (pth));
         let res = await window.file.identify(pth);
         console.log(res);
     }
@@ -36,11 +36,58 @@ const IdentifyFileTypeButton = ({ pth }: { pth: string }) => {
     )
 }
 
+const IngestButton = () => {
+    const [loading, setLoading] = useState(false)
+
+    async function handleIngest() {
+        try {
+            setLoading(true)
+
+            // Open native file picker
+            const result = await window.file.pick()
+
+            if (!result || result.canceled) {
+                return
+            }
+
+            // Entire ingestion handled by backend
+            const ingestResult = await window.file.ingest(
+                result.path,
+            )
+
+            console.log(ingestResult)
+
+            if (!ingestResult.success) {
+                alert("Ingestion failed")
+                return
+            }
+
+            alert("Ingestion completed")
+        } catch (error) {
+            console.error(error)
+            alert("Pipeline failed")
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return (
+        <Button
+            onClick={handleIngest}
+            disabled={loading}
+        >
+            {loading ? "Processing..." : "Add Media"}
+        </Button>
+    )
+}
+
+
 const Butt = () => (
     <div>
         <h1>Button page</h1>
         {/* <CreateStoreButton /> */}
-        <IdentifyFileTypeButton pth="C:\Users\vishn\Downloads\raybox.png" />
+        {/* <IdentifyFileTypeButton pth="C:\Users\vishn\Downloads\raybox.png" /> */}
+        <IngestButton />
     </div>
 );
 

@@ -11,4 +11,6 @@ contextBridge.exposeInMainWorld("store", {
 
 contextBridge.exposeInMainWorld("file", {
   identify: (filePath: string) => ipcRenderer.invoke("identify-file", filePath),
+  ingest: (filePath: string) => ipcRenderer.invoke("ingest-file", filePath),
+  pick: () => ipcRenderer.invoke("pick-file"),
 })
