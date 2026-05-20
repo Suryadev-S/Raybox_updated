@@ -5,12 +5,7 @@ import path from "path"
 import { checkStore } from "./checkStore"
 import { identifyFileType } from "./identifyFileType"
 import { generateImageThumbnail } from "./imageGenerator"
-
-// import { checkStore } from "../store/checkStore"
-
-// import { identifyFileType } from "../file/identifyFileType"
-
-// import { generateImageThumbnail } from "../thumbnail/generators/imageThumbnail"
+import { generateFileHash } from "../generateFileHash"
 
 type IngestResult = {
     success: boolean
@@ -38,7 +33,7 @@ export async function ingestFile(
 
         // STEP 2
         // Identify file type
-        const fileType = await identifyFileType(
+        const fileType = identifyFileType(
             filePath,
         )
 
@@ -49,11 +44,20 @@ export async function ingestFile(
             }
         }
 
+
+        // Generate file hash
+
+        const fileHash = await generateFileHash(
+            filePath,
+        )
+
         // STEP 3
         // Create category folder
         const categoryFolderPath = path.join(
             storePath,
             fileType.category,
+            fileHash.slice(0, 2),
+            fileHash.slice(2, 4)
         )
 
         await fs.mkdir(categoryFolderPath, {
@@ -65,6 +69,8 @@ export async function ingestFile(
         const thumbFolderPath = path.join(
             storePath,
             "thumb",
+            fileHash.slice(0, 2),
+            fileHash.slice(2, 4)
         )
 
         await fs.mkdir(thumbFolderPath, {
@@ -80,14 +86,16 @@ export async function ingestFile(
             extension,
         )
 
+        const timestamp = Date.now();
+
         const originalPath = path.join(
             categoryFolderPath,
-            `${baseName}${extension}`,
+            `${baseName}_${timestamp}${extension}`,
         )
 
         const thumbnailPath = path.join(
             thumbFolderPath,
-            `${baseName}_thumb.jpg`,
+            `${baseName}_thumb_${timestamp}.jpg`,
         )
 
         // STEP 6
