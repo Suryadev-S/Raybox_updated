@@ -1,0 +1,55 @@
+import fs from "fs/promises"
+import crypto from "crypto"
+
+import sharp from "sharp"
+
+import type { ThumbRecordData }
+    from "./types"
+
+type ExtractThumbInput = {
+    fileId: string
+
+    kind: string
+
+    storagePath: string
+}
+
+export async function extractThumbRecordData({
+    fileId,
+    kind,
+    storagePath,
+}: ExtractThumbInput): Promise<ThumbRecordData> {
+
+    const stats = await fs.stat(storagePath)
+
+    let width: number | null = null
+    let height: number | null = null
+
+    try {
+        const metadata =
+            await sharp(storagePath)
+                .metadata()
+
+        width = metadata.width || null
+        height = metadata.height || null
+    } catch (error) {
+        console.error(error)
+    }
+
+    return {
+        id: crypto.randomUUID(),
+
+        file_id: fileId,
+
+        kind,
+
+        storage_path: storagePath,
+
+        mime_type: "image/jpeg",
+
+        width,
+        height,
+
+        size_bytes: stats.size,
+    }
+}

@@ -5,6 +5,7 @@ import started from 'electron-squirrel-startup';
 // SELF-NOTE: important to add all ipc in the main.ts
 import './lib/store.ipc'
 import { initializeDatabase } from './lib/db/database';
+import { ensureRootBinExists } from './lib/db/ensureRootBin';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -38,9 +39,9 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-  initializeDatabase()
-
-  createWindow()
+  initializeDatabase();
+  ensureRootBinExists();
+  createWindow();
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

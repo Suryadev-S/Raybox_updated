@@ -6,6 +6,11 @@ import { checkStore } from "./checkStore"
 import { identifyFileType } from "./identifyFileType"
 import { generateImageThumbnail } from "./imageGenerator"
 import { generateFileHash } from "../generateFileHash"
+import { extractFileRecordData } from "../extractFileRecordData"
+import { createFileRecord } from "../db/createFileRecord"
+import { extractThumbRecordData } from "../extractThumbRecordData"
+import { createThumbRecord } from "../db/createThumbRecord"
+import { getDb } from "../db/database"
 
 type IngestResult = {
     success: boolean
@@ -18,6 +23,7 @@ export async function ingestFile(
     filePath: string,
 ): Promise<IngestResult> {
     try {
+        console.log("inside ingst")
         // STEP 1
         // Check store
         const storeResult = await checkStore()
@@ -128,6 +134,48 @@ export async function ingestFile(
                 thumbnailPath,
             )
         }
+
+        // STEP 9
+        // Extract DB record data
+        const fileRecord =
+            await extractFileRecordData({
+                sourcePath: filePath,
+
+                storagePath: originalPath,
+
+                checksum: fileHash,
+
+                fileType: {
+                    category: fileType.category,
+                    // mimeType: fileType.mimeType,
+                },
+            });
+
+        const thumbRecord =
+            await extractThumbRecordData({
+                fileId: fileRecord.id,
+
+                kind: "preview",
+
+                storagePath: thumbnailPath,
+            })
+
+        // STEP 10
+        // Create DB record
+        createFileRecord(fileRecord);
+        // debug test
+        const db = getDb()
+
+        const existing = db
+            .prepare(`
+    SELECT id
+    FROM files
+    WHERE id = ?
+  `)
+            .get(fileRecord.id)
+
+        console.log(existing)
+        createThumbRecord(thumbRecord);
 
         return {
             success: true,
