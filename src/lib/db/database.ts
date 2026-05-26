@@ -17,7 +17,7 @@ export function initializeDatabase(): void {
     db.pragma('foreign_keys = ON');
 
     // Create tables
-    // db.exec(schema);
+    db.exec(schema);
 
     console.log(`Database initialized at: ${dbPath}`)
 }

@@ -27,7 +27,7 @@ export async function ingestFile(
         // STEP 1
         // Check store
         const storeResult = await checkStore()
-
+        
         if (!storeResult.exists || !storeResult.path) {
             return {
                 success: false,
@@ -52,63 +52,69 @@ export async function ingestFile(
 
 
         // Generate file hash
-
         const fileHash = await generateFileHash(
             filePath,
         )
 
+        // STEP 5
+        // Generate names
+        const extension = path.extname(filePath)
+        const baseName = path.basename(
+            filePath,
+            extension,
+        )
+        const timestamp = Date.now();
+        const originalFileName = `${baseName}_${timestamp}${extension}`;
+        const thumbnailFileName = `${baseName}_thumb_${timestamp}.jpg`;
+
         // STEP 3
         // Create category folder
-        const categoryFolderPath = path.join(
-            storePath,
+        const categoryFolderPath_relative = path.join(
             fileType.category,
             fileHash.slice(0, 2),
             fileHash.slice(2, 4)
         )
 
-        await fs.mkdir(categoryFolderPath, {
+        const categoryFolderPath_absolute = path.join(
+            storePath,
+            categoryFolderPath_relative
+        )
+
+        await fs.mkdir(categoryFolderPath_absolute, {
             recursive: true,
-        })
+        });
+
+        const originalFilePath = path.join(
+            categoryFolderPath_absolute,
+            originalFileName
+        );
 
         // STEP 4
         // Create thumb folder
-        const thumbFolderPath = path.join(
-            storePath,
+        const thumbFolderPath_relative = path.join(
             "thumb",
             fileHash.slice(0, 2),
             fileHash.slice(2, 4)
         )
 
-        await fs.mkdir(thumbFolderPath, {
+        const thumbFolderPath_absolute = path.join(
+            storePath,
+            thumbFolderPath_relative
+        )
+        await fs.mkdir(thumbFolderPath_absolute, {
             recursive: true,
         })
 
-        // STEP 5
-        // Generate names
-        const extension = path.extname(filePath)
-
-        const baseName = path.basename(
-            filePath,
-            extension,
-        )
-
-        const timestamp = Date.now();
-
-        const originalPath = path.join(
-            categoryFolderPath,
-            `${baseName}_${timestamp}${extension}`,
-        )
-
-        const thumbnailPath = path.join(
-            thumbFolderPath,
-            `${baseName}_thumb_${timestamp}.jpg`,
+        const thumbFilePath = path.join(
+            thumbFolderPath_absolute,
+            thumbnailFileName
         )
 
         // STEP 6
         // Copy original
         await fs.copyFile(
             filePath,
-            originalPath,
+            originalFilePath
         )
 
         // STEP 7
@@ -130,8 +136,8 @@ export async function ingestFile(
         // Generate thumbnail if supported
         if (generator) {
             await generator(
-                originalPath,
-                thumbnailPath,
+                originalFilePath,
+                thumbFilePath,
             )
         }
 
@@ -140,11 +146,9 @@ export async function ingestFile(
         const fileRecord =
             await extractFileRecordData({
                 sourcePath: filePath,
-
-                storagePath: originalPath,
-
+                relativePath: path.join(categoryFolderPath_relative, originalFileName),
+                absolutePath: originalFilePath,
                 checksum: fileHash,
-
                 fileType: {
                     category: fileType.category,
                     // mimeType: fileType.mimeType,
@@ -154,33 +158,20 @@ export async function ingestFile(
         const thumbRecord =
             await extractThumbRecordData({
                 fileId: fileRecord.id,
-
                 kind: "preview",
-
-                storagePath: thumbnailPath,
+                relativePath: path.join(thumbFolderPath_relative, thumbnailFileName),
+                absolutePath: thumbFilePath,
             })
 
         // STEP 10
         // Create DB record
         createFileRecord(fileRecord);
-        // debug test
-        const db = getDb()
-
-        const existing = db
-            .prepare(`
-    SELECT id
-    FROM files
-    WHERE id = ?
-  `)
-            .get(fileRecord.id)
-
-        console.log(existing)
         createThumbRecord(thumbRecord);
 
         return {
             success: true,
-            originalPath,
-            thumbnailPath,
+            originalPath: originalFilePath,
+            thumbnailPath: thumbFilePath,
         }
     } catch (error) {
         console.error(error)

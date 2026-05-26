@@ -11,7 +11,9 @@ import { getRootBin } from "./db/getRootBin"
 type ExtractFileRecordInput = {
     sourcePath: string
 
-    storagePath: string
+    relativePath: string
+
+    absolutePath: string
 
     checksum: string
 
@@ -23,7 +25,8 @@ type ExtractFileRecordInput = {
 
 export async function extractFileRecordData({
     sourcePath,
-    storagePath,
+    relativePath,
+    absolutePath,
     checksum,
     fileType,
 }: ExtractFileRecordInput): Promise<FileRecordData> {
@@ -42,7 +45,7 @@ export async function extractFileRecordData({
             .toLowerCase()
 
     const filename =
-        path.basename(storagePath)
+        path.basename(absolutePath)
 
     let width: number | null = null
     let height: number | null = null
@@ -68,7 +71,7 @@ export async function extractFileRecordData({
 
         name: filename,
 
-        storage_path: storagePath,
+        storage_path: relativePath,
 
         ancestor_path: "/",
 

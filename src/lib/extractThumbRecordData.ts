@@ -11,23 +11,25 @@ type ExtractThumbInput = {
 
     kind: string
 
-    storagePath: string
+    relativePath: string
+    absolutePath: string
 }
 
 export async function extractThumbRecordData({
     fileId,
     kind,
-    storagePath,
+    relativePath,
+    absolutePath
 }: ExtractThumbInput): Promise<ThumbRecordData> {
 
-    const stats = await fs.stat(storagePath)
+    const stats = await fs.stat(absolutePath)
 
     let width: number | null = null
     let height: number | null = null
 
     try {
         const metadata =
-            await sharp(storagePath)
+            await sharp(absolutePath)
                 .metadata()
 
         width = metadata.width || null
@@ -43,7 +45,7 @@ export async function extractThumbRecordData({
 
         kind,
 
-        storage_path: storagePath,
+        storage_path: relativePath,
 
         mime_type: "image/jpeg",
 
