@@ -26,10 +26,15 @@ export type ThumbnailResult = {
     reason?: string
 }
 
+export type CreateBinInput = {
+    name: string
+    parentId: string | null
+}
+
 export type BinRecordData = {
     id: string
 
-    parent_id: string
+    parent_id: string | null
 
     name: string
     ancestor_path: string

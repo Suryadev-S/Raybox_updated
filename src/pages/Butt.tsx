@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { CreateBinInput } from "@/lib/types";
 import React, { useState } from "react";
 
 const CreateStoreButton = () => {
@@ -81,6 +82,19 @@ const IngestButton = () => {
     )
 }
 
+const CreateBin = ({ name, parentId }: CreateBinInput) => {
+    const handleCreateBin = async () => {
+        const res = await window.store.createBin({ name, parentId });
+        if (res) {
+            console.log(res.name);
+        }
+    }
+
+    return (
+        <Button onClick={handleCreateBin}>Create Bin</Button>
+    )
+}
+
 
 const Butt = () => (
     <div>
@@ -88,6 +102,7 @@ const Butt = () => (
         {/* <CreateStoreButton /> */}
         {/* <IdentifyFileTypeButton pth="C:\Users\vishn\Downloads\raybox.png" /> */}
         <IngestButton />
+        <CreateBin name="testBinChild" parentId={'fc14ac11-50bf-48f6-b70a-96bfed7208ec'} />
     </div>
 );
 

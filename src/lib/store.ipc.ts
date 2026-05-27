@@ -3,6 +3,9 @@ import { createStore } from "./ipcHandlers/createStore"
 import { checkStore } from "./ipcHandlers/checkStore"
 import { identifyFileType } from "./ipcHandlers/identifyFileType"
 import { ingestFile } from "./ipcHandlers/ingestFile"
+import { getBinContents } from "./ipcHandlers/getBinContents"
+import { createBin } from "./ipcHandlers/createBin"
+import { CreateBinInput } from "./types"
 
 
 ipcMain.handle("create-store", createStore)
@@ -65,6 +68,20 @@ ipcMain.handle("pick-file", async () => {
         path: result.filePaths[0],
     }
 })
+
+ipcMain.handle(
+    'get-bin-contents',
+    async (_, binId: string) => {
+        return getBinContents(binId)
+    }
+)
+
+ipcMain.handle(
+    "create-bin",
+    async (_, input: CreateBinInput) => {
+        return createBin(input)
+    },
+)
 
 ipcMain.handle("test", async () => {
     console.log("this is a test handler")
