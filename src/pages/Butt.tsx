@@ -1,5 +1,16 @@
+import { useBinNavigation } from "@/components/BinNavigation";
 import { Button } from "@/components/ui/button";
 import { CreateBinInput } from "@/lib/types";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
 import React, { useState } from "react";
 
 const CreateStoreButton = () => {
@@ -82,16 +93,87 @@ const IngestButton = () => {
     )
 }
 
-const CreateBin = ({ name, parentId }: CreateBinInput) => {
-    const handleCreateBin = async () => {
-        const res = await window.store.createBin({ name, parentId });
-        if (res) {
-            console.log(res.name);
+const CreateBin = () => {
+    const { currentBinId } = useBinNavigation()
+    const [open, setOpen] = useState(false)
+    const [name, setName] = useState('')
+    const [loading, setLoading] = useState(false)
+
+    async function handleCreateBin() {
+        if (!name.trim()) return
+        try {
+            setLoading(true)
+
+            const res =
+                await window.store.createBin({
+                    name,
+                    parentId: currentBinId,
+                })
+
+            console.log(res)
+            setName('')
+            setOpen(false)
+
+        } catch (error) {
+            console.error(error)
+
+        } finally {
+            setLoading(false)
         }
     }
 
     return (
-        <Button onClick={handleCreateBin}>Create Bin</Button>
+        <Dialog
+            open={open}
+            onOpenChange={setOpen}
+        >
+            <DialogTrigger asChild>
+                <Button>
+                    Create Bin
+                </Button>
+            </DialogTrigger>
+
+            <DialogContent>
+
+                <DialogHeader>
+                    <DialogTitle>
+                        Create Bin
+                    </DialogTitle>
+
+                    <DialogDescription>
+                        Enter a name for the new bin.
+                    </DialogDescription>
+                </DialogHeader>
+
+                <Input
+                    placeholder="Bin name"
+                    value={name}
+                    onChange={(e) =>
+                        setName(e.target.value)
+                    }
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            handleCreateBin()
+                        }
+                    }}
+                />
+
+                <DialogFooter>
+                    <Button
+                        onClick={handleCreateBin}
+                        disabled={
+                            loading ||
+                            !name.trim()
+                        }
+                    >
+                        {loading
+                            ? 'Creating...'
+                            : 'Create'}
+                    </Button>
+                </DialogFooter>
+
+            </DialogContent>
+        </Dialog>
     )
 }
 
@@ -102,7 +184,7 @@ const Butt = () => (
         {/* <CreateStoreButton /> */}
         {/* <IdentifyFileTypeButton pth="C:\Users\vishn\Downloads\raybox.png" /> */}
         <IngestButton />
-        <CreateBin name="testBinChild" parentId={'fc14ac11-50bf-48f6-b70a-96bfed7208ec'} />
+        <CreateBin />
     </div>
 );
 
