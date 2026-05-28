@@ -6,6 +6,7 @@ import { ingestFile } from "./ipcHandlers/ingestFile"
 import { getBinContents } from "./ipcHandlers/getBinContents"
 import { createBin } from "./ipcHandlers/createBin"
 import { CreateBinInput } from "./types"
+import { getRootBinId } from "./ipcHandlers/getRootBinId"
 
 
 ipcMain.handle("create-store", createStore)
@@ -82,6 +83,8 @@ ipcMain.handle(
         return createBin(input)
     },
 )
+
+ipcMain.handle("get-root-bin-id", getRootBinId)
 
 ipcMain.handle("test", async () => {
     console.log("this is a test handler")

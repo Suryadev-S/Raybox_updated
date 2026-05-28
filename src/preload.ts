@@ -7,6 +7,7 @@ import { CreateBinInput } from "./lib/types";
 contextBridge.exposeInMainWorld("store", {
   create: () => ipcRenderer.invoke("create-store"),
   check: () => ipcRenderer.invoke("check-store"),
+  getRootBinId: () => ipcRenderer.invoke("get-root-bin-id"),
   getBin: (binId: string) => ipcRenderer.invoke('get-bin-contents', binId),
   createBin: (input: CreateBinInput) => ipcRenderer.invoke('create-bin', input),
   test: () => ipcRenderer.invoke("test"),

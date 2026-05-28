@@ -1,3 +1,4 @@
+import { useBinNavigation } from '@/components/BinNavigation'
 import { useEffect, useState } from 'react'
 
 interface Bin {
@@ -13,10 +14,11 @@ interface FileItem {
 
 export default function Media() {
     // hardcoded root
-    const ROOT_BIN_ID = '7fb34ae6-2a44-4734-9ec0-bec22ee3a8fb'
+    // const ROOT_BIN_ID = '7fb34ae6-2a44-4734-9ec0-bec22ee3a8fb'
 
-    const [currentBinId, setCurrentBinId] =
-        useState(ROOT_BIN_ID)
+    // const [currentBinId, setCurrentBinId] =
+    //     useState(ROOT_BIN_ID)
+    const { currentBinId, setCurrentBinId } = useBinNavigation();
 
     const [bins, setBins] = useState<Bin[]>([])
     const [files, setFiles] = useState<FileItem[]>([])
@@ -25,12 +27,11 @@ export default function Media() {
         loadBin(currentBinId)
     }, [currentBinId])
 
-    async function loadBin(binId: string) {
+    async function loadBin(binId: string | null) {
         const data =
             await window.store.getBin(
                 binId
             )
-
         setBins(data.bins)
         setFiles(data.files)
     }
@@ -39,7 +40,7 @@ export default function Media() {
         <div className="p-4">
 
             <h1 className="mb-4 text-lg font-bold">
-                Explorer
+                Explorer with bin
             </h1>
 
             <div className="space-y-1">

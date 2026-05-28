@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from "react"
+import { createContext, ReactNode, useContext, useEffect, useState } from "react"
 
 type BinNavigationContextType = {
     currentBinId: string | null
@@ -14,7 +14,19 @@ export function BinNavigationProvider({
     children: ReactNode
 }) {
     const [currentBinId, setCurrentBinId] =
-        useState<string | null>(null)
+        useState<string | null>(null);
+
+    useEffect(() => {
+        async function initializeRootBin() {
+            console.log("inside init root bin in renderer");
+            const rootId =
+                await window.store.getRootBinId()
+
+            setCurrentBinId(rootId)
+        }
+
+        initializeRootBin()
+    }, [])
 
     return (
         <BinNavigationContext

@@ -54,8 +54,8 @@ export function createBin({
 
     // BUILD ANCESTOR PATH
     const ancestorPath =
-        parentBin.ancestor_path === "/"
-            ? `/${parentBin.name}`
+        parentBin.name === "/"
+            ? "/"
             : `${parentBin.ancestor_path}/${parentBin.name}`
 
     const bin: BinRecordData = {
