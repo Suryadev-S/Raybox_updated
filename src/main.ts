@@ -39,11 +39,8 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-  console.log('before init db');
   initializeDatabase();
-  console.log('after initDb and before ensurerootbin')
   ensureRootBinExists();
-  console.log('after ensureroot')
   createWindow();
 });
 

@@ -19,7 +19,7 @@ export function createBin({
 
             name,
 
-            ancestor_path: "/",
+            ancestor_path: "",
         }
 
         db.prepare(`
@@ -54,9 +54,7 @@ export function createBin({
 
     // BUILD ANCESTOR PATH
     const ancestorPath =
-        parentBin.name === "/"
-            ? "/"
-            : `${parentBin.ancestor_path}/${parentBin.name}`
+        `${parentBin.ancestor_path}/${parentBin.name}`.replace(/\/+/g, "/");
 
     const bin: BinRecordData = {
         id: crypto.randomUUID(),

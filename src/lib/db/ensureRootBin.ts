@@ -34,7 +34,7 @@ export function ensureRootBinExists(): void {
         rootId,
         null,
         "/",
-        "/",
+        "",
     )
 
     console.log("Root bin created")

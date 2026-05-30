@@ -6,7 +6,9 @@ export function getBinContents(binId: string) {
     const bins = db.prepare(`
         SELECT
             id,
+            parent_id,
             name,
+            ancestor_path,
             created_at
         FROM bins
         WHERE parent_id = ?
@@ -19,6 +21,7 @@ export function getBinContents(binId: string) {
             id,
             name,
             type,
+            ancestor_path,
             mime_type,
             size_bytes,
             created_at

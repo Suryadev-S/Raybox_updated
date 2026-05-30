@@ -1,8 +1,13 @@
+import { BinRecordData } from "@/lib/types"
 import { createContext, ReactNode, useContext, useEffect, useState } from "react"
 
 type BinNavigationContextType = {
-    currentBinId: string | null
-    setCurrentBinId: (id: string | null) => void
+    //     currentBinId: string | null
+    //     setCurrentBinId: React.Dispatch<React.SetStateAction<string>>
+    //     prevBinIdStack: string[]
+    //     setPrevBinIdStack: React.Dispatch<React.SetStateAction<string[]>>
+    navStack: BinRecordData[]
+    setNavStack: React.Dispatch<React.SetStateAction<BinRecordData[]>>
 }
 
 const BinNavigationContext =
@@ -13,16 +18,20 @@ export function BinNavigationProvider({
 }: {
     children: ReactNode
 }) {
-    const [currentBinId, setCurrentBinId] =
-        useState<string | null>(null);
+    // const [currentBinId, setCurrentBinId] =
+    //     useState<string | null>(null);
+    // const [prevBinIdStack, setPrevBinIdStack] =
+    //     useState<string[]>([]);
+
+    const [navStack, setNavStack] = useState<BinRecordData[]>([]);
 
     useEffect(() => {
         async function initializeRootBin() {
-            console.log("inside init root bin in renderer");
-            const rootId =
+            const root =
                 await window.store.getRootBinId()
 
-            setCurrentBinId(rootId)
+            // setCurrentBinId(rootId)
+            setNavStack((prev) => [...prev, root])
         }
 
         initializeRootBin()
@@ -31,8 +40,12 @@ export function BinNavigationProvider({
     return (
         <BinNavigationContext
             value={{
-                currentBinId,
-                setCurrentBinId,
+                // currentBinId,
+                // setCurrentBinId,
+                // prevBinIdStack,
+                // setPrevBinIdStack
+                navStack,
+                setNavStack
             }}
         >
             {children}
