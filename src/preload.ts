@@ -2,7 +2,7 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
 import { contextBridge, ipcRenderer } from "electron";
-import { CreateBinInput } from "./lib/types";
+import { BinRecordData, CreateBinInput } from "./lib/types";
 
 contextBridge.exposeInMainWorld("store", {
   create: () => ipcRenderer.invoke("create-store"),
@@ -15,6 +15,6 @@ contextBridge.exposeInMainWorld("store", {
 
 contextBridge.exposeInMainWorld("file", {
   identify: (filePath: string) => ipcRenderer.invoke("identify-file", filePath),
-  ingest: (filePath: string) => ipcRenderer.invoke("ingest-file", filePath),
+  ingest: (filePath: string, bin: BinRecordData) => ipcRenderer.invoke("ingest-file", filePath, bin),
   pick: () => ipcRenderer.invoke("pick-file"),
 })

@@ -1,5 +1,6 @@
 import { useBinNavigation } from '@/components/BinNavigation'
 import CreateBin from '@/components/CreateBin'
+import IngestButton from '@/components/IngestButton'
 import { Button } from '@/components/ui/button'
 import { BinRecordData } from '@/lib/types'
 import { useEffect, useState } from 'react'
@@ -48,6 +49,8 @@ export default function Media() {
                 Explorer with bin
                 <br />
                 <CreateBin />
+                <br />
+                <IngestButton />
             </h1>
             <h2>{`${navStack[navStack.length - 1].ancestor_path}/${navStack[navStack.length - 1].name}`.replace(/\/+/g, "/")}</h2>
             <div>

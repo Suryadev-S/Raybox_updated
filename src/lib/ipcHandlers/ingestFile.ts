@@ -11,6 +11,7 @@ import { createFileRecord } from "../db/createFileRecord"
 import { extractThumbRecordData } from "../extractThumbRecordData"
 import { createThumbRecord } from "../db/createThumbRecord"
 import { getDb } from "../db/database"
+import { BinRecordData } from "../types"
 
 type IngestResult = {
     success: boolean
@@ -21,13 +22,13 @@ type IngestResult = {
 
 export async function ingestFile(
     filePath: string,
+    bin: BinRecordData
 ): Promise<IngestResult> {
     try {
-        console.log("inside ingst")
         // STEP 1
         // Check store
         const storeResult = await checkStore()
-        
+
         if (!storeResult.exists || !storeResult.path) {
             return {
                 success: false,
@@ -153,6 +154,7 @@ export async function ingestFile(
                     category: fileType.category,
                     // mimeType: fileType.mimeType,
                 },
+                bin
             });
 
         const thumbRecord =

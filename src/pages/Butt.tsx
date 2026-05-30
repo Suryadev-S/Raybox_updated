@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import React, { useState } from "react";
+import CreateBin from "@/components/CreateBin";
 
 const CreateStoreButton = () => {
     const handleCreateStore = async () => {
@@ -49,7 +50,8 @@ const IdentifyFileTypeButton = ({ pth }: { pth: string }) => {
 }
 
 const IngestButton = () => {
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const { navStack } = useBinNavigation();
 
     async function handleIngest() {
         try {
@@ -65,6 +67,7 @@ const IngestButton = () => {
             // Entire ingestion handled by backend
             const ingestResult = await window.file.ingest(
                 result.path,
+                navStack[navStack.length - 1]
             )
 
             console.log(ingestResult)
@@ -93,89 +96,89 @@ const IngestButton = () => {
     )
 }
 
-const CreateBin = () => {
-    const { currentBinId } = useBinNavigation()
-    const [open, setOpen] = useState(false)
-    const [name, setName] = useState('')
-    const [loading, setLoading] = useState(false)
+// const CreateBin = () => {
+//     const { currentBinId } = useBinNavigation()
+//     const [open, setOpen] = useState(false)
+//     const [name, setName] = useState('')
+//     const [loading, setLoading] = useState(false)
 
-    async function handleCreateBin() {
-        if (!name.trim()) return
-        try {
-            setLoading(true)
+//     async function handleCreateBin() {
+//         if (!name.trim()) return
+//         try {
+//             setLoading(true)
 
-            const res =
-                await window.store.createBin({
-                    name,
-                    parentId: currentBinId,
-                })
+//             const res =
+//                 await window.store.createBin({
+//                     name,
+//                     parentId: currentBinId,
+//                 })
 
-            console.log(res)
-            setName('')
-            setOpen(false)
+//             console.log(res)
+//             setName('')
+//             setOpen(false)
 
-        } catch (error) {
-            console.error(error)
+//         } catch (error) {
+//             console.error(error)
 
-        } finally {
-            setLoading(false)
-        }
-    }
+//         } finally {
+//             setLoading(false)
+//         }
+//     }
 
-    return (
-        <Dialog
-            open={open}
-            onOpenChange={setOpen}
-        >
-            <DialogTrigger asChild>
-                <Button>
-                    Create Bin
-                </Button>
-            </DialogTrigger>
+//     return (
+//         <Dialog
+//             open={open}
+//             onOpenChange={setOpen}
+//         >
+//             <DialogTrigger asChild>
+//                 <Button>
+//                     Create Bin
+//                 </Button>
+//             </DialogTrigger>
 
-            <DialogContent>
+//             <DialogContent>
 
-                <DialogHeader>
-                    <DialogTitle>
-                        Create Bin
-                    </DialogTitle>
+//                 <DialogHeader>
+//                     <DialogTitle>
+//                         Create Bin
+//                     </DialogTitle>
 
-                    <DialogDescription>
-                        Enter a name for the new bin.
-                    </DialogDescription>
-                </DialogHeader>
+//                     <DialogDescription>
+//                         Enter a name for the new bin.
+//                     </DialogDescription>
+//                 </DialogHeader>
 
-                <Input
-                    placeholder="Bin name"
-                    value={name}
-                    onChange={(e) =>
-                        setName(e.target.value)
-                    }
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                            handleCreateBin()
-                        }
-                    }}
-                />
+//                 <Input
+//                     placeholder="Bin name"
+//                     value={name}
+//                     onChange={(e) =>
+//                         setName(e.target.value)
+//                     }
+//                     onKeyDown={(e) => {
+//                         if (e.key === 'Enter') {
+//                             handleCreateBin()
+//                         }
+//                     }}
+//                 />
 
-                <DialogFooter>
-                    <Button
-                        onClick={handleCreateBin}
-                        disabled={
-                            loading ||
-                            !name.trim()
-                        }
-                    >
-                        {loading
-                            ? 'Creating...'
-                            : 'Create'}
-                    </Button>
-                </DialogFooter>
+//                 <DialogFooter>
+//                     <Button
+//                         onClick={handleCreateBin}
+//                         disabled={
+//                             loading ||
+//                             !name.trim()
+//                         }
+//                     >
+//                         {loading
+//                             ? 'Creating...'
+//                             : 'Create'}
+//                     </Button>
+//                 </DialogFooter>
 
-            </DialogContent>
-        </Dialog>
-    )
-}
+//             </DialogContent>
+//         </Dialog>
+//     )
+// }
 
 
 const Butt = () => (

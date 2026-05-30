@@ -21,6 +21,8 @@ type ExtractFileRecordInput = {
         category: string
         mimeType?: string
     }
+
+    bin: BinRecordData
 }
 
 export async function extractFileRecordData({
@@ -29,13 +31,14 @@ export async function extractFileRecordData({
     absolutePath,
     checksum,
     fileType,
+    bin
 }: ExtractFileRecordInput): Promise<FileRecordData> {
 
-    const rootBin = getRootBin() as BinRecordData
+    // const rootBin = getRootBin() as BinRecordData
 
-    if (!rootBin) {
-        throw new Error("ROOT_BIN_NOT_FOUND")
-    }
+    // if (!rootBin) {
+    //     throw new Error("ROOT_BIN_NOT_FOUND")
+    // }
 
     const stats = await fs.stat(sourcePath)
 
@@ -67,13 +70,13 @@ export async function extractFileRecordData({
     return {
         id: crypto.randomUUID(),
 
-        parent_bin_id: rootBin.id,
+        parent_bin_id: bin.id,
 
         name: filename,
 
         storage_path: relativePath,
 
-        ancestor_path: "/",
+        ancestor_path: `${bin.ancestor_path}/${bin.name}`.replace(/\/+/g, "/"),
 
         mime_type:
             fileType.mimeType ||

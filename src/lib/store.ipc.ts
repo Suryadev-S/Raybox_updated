@@ -5,7 +5,7 @@ import { identifyFileType } from "./ipcHandlers/identifyFileType"
 import { ingestFile } from "./ipcHandlers/ingestFile"
 import { getBinContents } from "./ipcHandlers/getBinContents"
 import { createBin } from "./ipcHandlers/createBin"
-import { CreateBinInput } from "./types"
+import { BinRecordData, CreateBinInput } from "./types"
 import { getRootBinId } from "./ipcHandlers/getRootBinId"
 
 
@@ -17,8 +17,8 @@ ipcMain.handle("identify-file", (_, filePath: string) =>
     identifyFileType(filePath),
 )
 
-ipcMain.handle("ingest-file", async (_, filePath: string) => {
-    return ingestFile(filePath)
+ipcMain.handle("ingest-file", async (_, filePath: string, bin: BinRecordData) => {
+    return ingestFile(filePath, bin)
 })
 
 ipcMain.handle("pick-file", async () => {
