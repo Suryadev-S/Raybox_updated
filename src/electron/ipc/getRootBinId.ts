@@ -1,7 +1,9 @@
+import { ipcMain } from "electron";
 import { getDb } from "../db/database"
+import { IPC } from "@shared/ipc";
 
 export function getRootBinId() {
-    console.log("inside get root bin");
+    // console.log("inside get root bin");
     const db = getDb()
 
     const root = db.prepare(`
@@ -14,3 +16,5 @@ export function getRootBinId() {
 
     return root || null
 }
+
+ipcMain.handle(IPC.GET_ROOT_BIN_ID, getRootBinId)

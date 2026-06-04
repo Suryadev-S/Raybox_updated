@@ -1,18 +1,18 @@
-import { useBinNavigation } from "@/components/BinNavigation";
-import { Button } from "@/components/ui/button";
-import { CreateBinInput } from "@/lib/types";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
+// import { useBinNavigation } from "@/components/BinNavigation";
+// import { Button } from "@/components/ui/button";
+// import { CreateBinInput } from "@/lib/types";
+// import {
+//     Dialog,
+//     DialogContent,
+//     DialogDescription,
+//     DialogFooter,
+//     DialogHeader,
+//     DialogTitle,
+//     DialogTrigger,
+// } from '@/components/ui/dialog'
+// import { Input } from '@/components/ui/input'
 import React, { useState } from "react";
-import CreateBin from "@/components/CreateBin";
+// import CreateBin from "@/components/CreateBin";
 
 const CreateStoreButton = () => {
     const handleCreateStore = async () => {
@@ -186,8 +186,8 @@ const Butt = () => (
         <h1>Button page</h1>
         {/* <CreateStoreButton /> */}
         {/* <IdentifyFileTypeButton pth="C:\Users\vishn\Downloads\raybox.png" /> */}
-        <IngestButton />
-        <CreateBin />
+        {/* <IngestButton />
+        <CreateBin /> */}
     </div>
 );
 

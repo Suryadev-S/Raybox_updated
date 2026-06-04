@@ -1,6 +1,9 @@
 import crypto from "crypto"
-import { BinRecordData, CreateBinInput } from "../../shared/types"
+// import { BinRecordData, CreateBinInput } from "../types"
 import { getDb } from "../db/database"
+import { ipcMain } from "electron"
+import { IPC } from "@shared/ipc"
+import { BinRecordData, CreateBinInput } from "@shared/types"
 
 export function createBin({
     name,
@@ -83,3 +86,10 @@ export function createBin({
 
     return bin
 }
+
+ipcMain.handle(
+    IPC.CREATE_BIN,
+    async (_, input: CreateBinInput) => {
+        return createBin(input)
+    },
+)

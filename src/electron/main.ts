@@ -3,9 +3,11 @@ import path from 'node:path';
 import started from 'electron-squirrel-startup';
 
 // SELF-NOTE: important to add all ipc in the main.ts
-import './lib/store.ipc'
-import { initializeDatabase } from './lib/db/database';
-import { ensureRootBinExists } from './lib/db/ensureRootBin';
+import './ipc'
+import { initializeDatabase } from './db/database';
+import { ensureRootBinExists } from './db/ensureRootBin';
+// import { initializeDatabase } from '../lib/db/database';
+// import { ensureRootBinExists } from '../lib/db/ensureRootBin';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {

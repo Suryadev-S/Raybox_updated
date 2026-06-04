@@ -1,11 +1,13 @@
+import { THUMBNAIL_QUALITY, THUMBNAIL_SIZE } from "@shared/constants"
+import { ThumbnailResult } from "@shared/types"
 import sharp from "sharp"
 
-import {
-    THUMBNAIL_SIZE,
-    THUMBNAIL_QUALITY,
-} from "../constants"
+// import {
+//     THUMBNAIL_SIZE,
+//     THUMBNAIL_QUALITY,
+// } from "../constants"
 
-import type { ThumbnailResult } from "../types"
+// import type { ThumbnailResult } from "../types"
 
 export async function generateImageThumbnail(
     inputPath: string,

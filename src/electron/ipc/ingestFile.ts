@@ -2,16 +2,26 @@
 
 import fs from "fs/promises"
 import path from "path"
+// import { checkStore } from "./checkStore"
+// import { identifyFileType } from "./identifyFileType"
+// import { generateImageThumbnail } from "./imageGenerator"
+// import { generateFileHash } from "../generateFileHash"
+// import { extractFileRecordData } from "../extractFileRecordData"
+// import { createFileRecord } from "../db/createFileRecord"
+// import { extractThumbRecordData } from "../extractThumbRecordData"
+// import { createThumbRecord } from "../db/createThumbRecord"
+// import { getDb } from "../db/database"
+import { ipcMain } from "electron"
+import { IPC } from "@shared/ipc"
+import { BinRecordData } from "@shared/types"
 import { checkStore } from "./checkStore"
 import { identifyFileType } from "./identifyFileType"
-import { generateImageThumbnail } from "./imageGenerator"
-import { generateFileHash } from "../generateFileHash"
-import { extractFileRecordData } from "../extractFileRecordData"
-import { createFileRecord } from "../db/createFileRecord"
-import { extractThumbRecordData } from "../extractThumbRecordData"
-import { createThumbRecord } from "../db/createThumbRecord"
-import { getDb } from "../db/database"
-import { BinRecordData } from "../../shared/types"
+import { generateFileHash } from "@electron/services/generateFileHash"
+import { generateImageThumbnail } from "../services/imageGenerator"
+import { extractFileRecordData } from "@electron/services/extractFileRecordData"
+import { extractThumbRecordData } from "@electron/services/extractThumbRecordData"
+import { createFileRecord } from "@electron/db/createFileRecord"
+import { createThumbRecord } from "@electron/db/createThumbRecord"
 
 type IngestResult = {
     success: boolean
@@ -184,3 +194,7 @@ export async function ingestFile(
         }
     }
 }
+
+ipcMain.handle(IPC.INGEST_FILE, async (_, filePath: string, bin: BinRecordData) => {
+    return ingestFile(filePath, bin)
+})

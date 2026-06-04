@@ -1,4 +1,6 @@
+import { ipcMain } from "electron"
 import { getDb } from "../db/database"
+import { IPC } from "@shared/ipc"
 
 export function getBinContents(binId: string) {
     const db = getDb()
@@ -36,3 +38,10 @@ export function getBinContents(binId: string) {
         files,
     }
 }
+
+ipcMain.handle(
+    IPC.GET_BIN_CONTENTS,
+    async (_, binId: string) => {
+        return getBinContents(binId)
+    }
+)

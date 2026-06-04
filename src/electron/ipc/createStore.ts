@@ -1,10 +1,12 @@
 import fs from "fs/promises"
 import path from "path"
-import { dialog } from "electron"
+import { dialog, ipcMain } from "electron"
 import { app } from "electron"
+import { StoreConfig } from "@shared/types"
+import { IPC } from "@shared/ipc"
 
 // import { getConfigPath } from "./getStorePath"
-import type { StoreConfig } from "../types"
+// import type { StoreConfig } from "../types"
 
 
 export function getConfigPath() {
@@ -40,3 +42,5 @@ export async function createStore() {
         path: selectedPath,
     }
 }
+
+ipcMain.handle(IPC.CREATE_STORE, createStore);

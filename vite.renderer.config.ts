@@ -5,7 +5,9 @@ import path from 'path'
 export default defineConfig({
     resolve: {
         alias: {
-            "@": path.resolve(__dirname, "src"),
-        },
+            "@electron": path.resolve(__dirname, "src/electron"),
+            "@renderer": path.resolve(__dirname, "src/renderer"),
+            "@shared": path.resolve(__dirname, "src/shared"),
+        }
     },
 });

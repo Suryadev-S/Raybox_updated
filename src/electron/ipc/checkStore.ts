@@ -1,10 +1,13 @@
 import fs from "fs/promises"
 
 import { getConfigPath } from "./createStore"
-import type {
-    StoreConfig,
-    CheckStoreResult,
-} from "../types"
+import { ipcMain } from "electron"
+import { IPC } from "@shared/ipc"
+import { CheckStoreResult, StoreConfig } from "@shared/types"
+// import type {
+//     StoreConfig,
+//     CheckStoreResult,
+// } from "../types"
 
 export async function checkStore(): Promise<CheckStoreResult> {
     try {
@@ -50,3 +53,5 @@ export async function checkStore(): Promise<CheckStoreResult> {
         }
     }
 }
+
+ipcMain.handle(IPC.CHECK_STORE, checkStore);

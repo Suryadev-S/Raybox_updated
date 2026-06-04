@@ -1,4 +1,5 @@
-import { BinRecordData } from "@/lib/types"
+// import { BinRecordData } from "@/lib/types"
+import { BinRecordData } from "@shared/types"
 import { createContext, ReactNode, useContext, useEffect, useState } from "react"
 
 type BinNavigationContextType = {
