@@ -8,5 +8,6 @@ export const IPC = {
     CREATE_BIN: "create-bin",
     IDENTIFY_FILE: "identify-file",
     INGEST_FILE: "ingest-file",
+    INGEST_FILE_V2: "ingest-file-v2",
     PICK_FILE: "pick-file",
 } as const;

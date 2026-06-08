@@ -1,4 +1,5 @@
-import { ThumbRecordData } from "../types"
+// import { ThumbRecordData } from "../types"
+import { ThumbRecordData } from "@shared/types"
 import { getDb } from "./database"
 
 export function createThumbRecord(

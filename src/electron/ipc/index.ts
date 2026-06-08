@@ -6,6 +6,7 @@ import './ingestFile'
 import './getBinContents'
 import './createBin'
 import './getRootBinId'
+import './ingestFile_v2'
 
 ipcMain.handle("pick-file", async () => {
     const result = await dialog.showOpenDialog({

@@ -18,10 +18,15 @@ const IngestButton = () => {
             }
 
             // Entire ingestion handled by backend
-            const ingestResult = await window.file.ingest(
-                result.path,
-                navStack[navStack.length - 1]
-            )
+            // const ingestResult = await window.file.ingest(
+            //     result.path,
+            //     navStack[navStack.length - 1]
+            // )
+
+            const ingestResult = await window.file.ingest_v2({
+                filePath: result.path,
+                bin: navStack[navStack.length - 1]
+            })
 
             console.log(ingestResult)
 

@@ -1,4 +1,5 @@
-import { FileRecordData } from "../types"
+// import { FileRecordData } from "../types"
+import { FileRecordData } from "@shared/types"
 import { getDb } from "./database"
 
 

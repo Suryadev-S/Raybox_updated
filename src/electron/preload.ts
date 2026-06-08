@@ -1,7 +1,7 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
-import { BinRecordData, CreateBinInput } from "@shared/types";
+import { BinRecordData, CreateBinInput, IngestInputOptions } from "@shared/types";
 import { contextBridge, ipcRenderer } from "electron";
 // import { BinRecordData, CreateBinInput } from "./lib/types";
 import { IPC } from '@shared/ipc'
@@ -18,5 +18,6 @@ contextBridge.exposeInMainWorld("store", {
 contextBridge.exposeInMainWorld("file", {
   identify: (filePath: string) => ipcRenderer.invoke(IPC.IDENTIFY_FILE, filePath),
   ingest: (filePath: string, bin: BinRecordData) => ipcRenderer.invoke(IPC.INGEST_FILE, filePath, bin),
+  ingest_v2: (payload: IngestInputOptions) => ipcRenderer.invoke(IPC.INGEST_FILE_V2, payload),
   pick: () => ipcRenderer.invoke(IPC.PICK_FILE),
 })

@@ -87,3 +87,31 @@ export type ThumbRecordData = {
 
     size_bytes: number | null
 }
+
+type DuplicateStrategy =
+    | "ask"
+    | "keep"
+    | "discard";
+
+type DuplicateInfo = {
+    id: string;
+    name: string;
+    checksum: string;
+    storagePath: string;
+};
+
+export type IngestResult = {
+    success: boolean
+    originalPath?: string
+    thumbnailPath?: string
+    reason?: string
+    duplicateFile?: DuplicateInfo;
+}
+
+export type IngestInputOptions = {
+    filePath: string;
+    bin: BinRecordData;
+    options?: {
+        duplicateStrategy?: DuplicateStrategy;
+    };
+}

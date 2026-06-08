@@ -62,8 +62,7 @@ CREATE TABLE IF NOT EXISTS files (
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at DATETIME,
 
-    UNIQUE(parent_bin_id, name),
-    UNIQUE(checksum)
+    UNIQUE(parent_bin_id, name)
 );
 
 CREATE INDEX IF NOT EXISTS idx_files_parent_bin_id
