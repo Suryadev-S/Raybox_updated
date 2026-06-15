@@ -12,6 +12,8 @@ contextBridge.exposeInMainWorld("store", {
   getRootBinId: () => ipcRenderer.invoke(IPC.GET_ROOT_BIN_ID),
   getBin: (binId: string) => ipcRenderer.invoke(IPC.GET_BIN_CONTENTS, binId),
   createBin: (input: CreateBinInput) => ipcRenderer.invoke(IPC.CREATE_BIN, input),
+  deleteBin: (binId: string, fullPath: string) => ipcRenderer.invoke(IPC.DELETE_BIN, binId, fullPath),
+  deleteFile: (fileId: string) => ipcRenderer.invoke(IPC.DELETE_FILE, fileId),
   test: () => ipcRenderer.invoke("test"),
 })
 

@@ -7,6 +7,8 @@ import './getBinContents'
 import './createBin'
 import './getRootBinId'
 import './ingestFile_v2'
+import './deleteFile';
+import './deleteBin'
 
 ipcMain.handle("pick-file", async () => {
     const result = await dialog.showOpenDialog({

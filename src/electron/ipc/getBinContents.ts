@@ -7,11 +7,7 @@ export function getBinContents(binId: string) {
 
     const bins = db.prepare(`
         SELECT
-            id,
-            parent_id,
-            name,
-            ancestor_path,
-            created_at
+           *
         FROM bins
         WHERE parent_id = ?
         AND deleted_at IS NULL
@@ -20,13 +16,7 @@ export function getBinContents(binId: string) {
 
     const files = db.prepare(`
         SELECT
-            id,
-            name,
-            type,
-            ancestor_path,
-            mime_type,
-            size_bytes,
-            created_at
+            *
         FROM files
         WHERE parent_bin_id = ?
         AND deleted_at IS NULL

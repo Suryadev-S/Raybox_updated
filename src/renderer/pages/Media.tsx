@@ -1,37 +1,24 @@
-// import { useBinNavigation } from '@/components/BinNavigation'
-// import CreateBin from '@/components/CreateBin'
-// import IngestButton from '@/components/IngestButton'
-// import { Button } from '@/components/ui/button'
-// import { BinRecordData } from '@/lib/types'
 import { useBinNavigation } from '@renderer/components/BinNavigation'
 import CreateBin from '@renderer/components/CreateBin'
 import IngestButton from '@renderer/components/IngestButton'
 import { Button } from '@renderer/components/ui/button'
-import { BinRecordData } from '@shared/types'
+import { Checkbox } from '@renderer/components/ui/checkbox'
+import { BinRecordData, FileRecordData } from '@shared/types'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-interface Bin {
-    id: string
-    name: string
-    ancestor_path: string
-}
-
-interface FileItem {
-    id: string
-    name: string
-    type: string
+type SelectedItem = {
+    itemType: 'bin' | 'file'
+    data: BinRecordData | FileRecordData
 }
 
 export default function Media() {
-    // const { currentBinId, setCurrentBinId, prevBinIdStack, setPrevBinIdStack } = useBinNavigation();
     const { navStack, setNavStack } = useBinNavigation();
 
-    const [bins, setBins] = useState<Bin[]>([])
-    const [files, setFiles] = useState<FileItem[]>([])
+    const [bins, setBins] = useState<BinRecordData[]>([]);
+    const [files, setFiles] = useState<FileRecordData[]>([]);
+    const [selection, setSelection] = useState<SelectedItem | null>(null)
 
-    // console.log(currentBinId);
-    // console.log(prevBinIdStack);
     console.log(navStack);
 
     useEffect(() => {
@@ -47,24 +34,50 @@ export default function Media() {
         setFiles(data.files)
     }
 
+    async function handleDelete() {
+        if (!selection) return
+
+        if (selection.itemType === 'bin') {
+            await window.store.deleteBin(
+                selection.data.id,
+                `${selection.data.ancestor_path}/${selection.data.name}`.replace(/\/+/g, "/")
+            )
+        } else {
+            await window.store.deleteFile(
+                selection.data.id
+            )
+        }
+
+        setSelection(null)
+
+        await loadBin(
+            navStack[navStack.length - 1].id
+        )
+    }
+
     return (
         <div className="p-4">
 
             <h1 className="mb-4 text-lg font-bold">
                 Explorer with bin
-                <br />
+                <br /><br />
                 <CreateBin />
-                <br />
+                <br /><br />
                 <IngestButton />
+                <br /><br />
+                <Button
+                    variant="destructive"
+                    disabled={!selection}
+                    onClick={handleDelete}
+                >
+                    Delete
+                </Button>
             </h1>
             <h2>{`${navStack[navStack.length - 1].ancestor_path}/${navStack[navStack.length - 1].name}`.replace(/\/+/g, "/")}</h2>
             <div>
                 {navStack.length > 1 && (
                     <Button variant={'link'}
                         onClick={() => {
-                            // const temp = prevBinIdStack.slice(); 
-                            // setCurrentBinId(() => temp.pop() as string);
-                            // setPrevBinIdStack(() => [...temp]);
                             setNavStack((prev) => prev.slice(0, -1));
                         }}>
                         ..
@@ -74,12 +87,16 @@ export default function Media() {
             <div className="space-y-1">
 
                 {bins.map((bin) => (
-                    <div key={bin.id}>
+                    <div key={bin.id} className="flex items-center gap-2">
+                        <Checkbox
+                            checked={selection?.data.id === bin.id}
+                            onCheckedChange={(checked) => {
+                                setSelection(checked ? { itemType: 'bin', data: bin } : null)
+                            }}
+                        />
                         <Button variant={'link'}
 
                             onClick={() => {
-                                // setPrevBinIdStack((prev) => [...prev, currentBinId as string])
-                                // setCurrentBinId(() => bin.id)
                                 setNavStack((prev) => [...prev, bin as BinRecordData]);
                             }
                             }>
@@ -92,11 +109,18 @@ export default function Media() {
 
 
                 {files.map((file) => (
-                    <div
-                        key={file.id}
-                        className="rounded border px-2 py-1"
-                    >
-                        📄 {file.name}
+                    <div key={file.id} className="flex items-center gap-2">
+                        <Checkbox
+                            checked={selection?.data.id === file.id}
+                            onCheckedChange={(checked) => {
+                                setSelection(checked ? { itemType: "file", data: file } : null)
+                            }}
+                        />
+                        <div
+                            className="rounded border px-2 py-1"
+                        >
+                            📄 {file.name}
+                        </div>
                     </div>
                 ))}
 

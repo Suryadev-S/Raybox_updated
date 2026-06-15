@@ -73,6 +73,7 @@ async function createDuplicateReference(
         name: generateDuplicateName(
             dupeFile.name,
         ),
+        ancestor_path: `${bin.ancestor_path}/${bin.name}`.replace(/\/+/g, "/")
     };
 
     createFileRecord(

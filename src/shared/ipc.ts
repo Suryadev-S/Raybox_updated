@@ -10,4 +10,6 @@ export const IPC = {
     INGEST_FILE: "ingest-file",
     INGEST_FILE_V2: "ingest-file-v2",
     PICK_FILE: "pick-file",
+    DELETE_BIN: "delete-bin",
+    DELETE_FILE: "delete-file",
 } as const;
