@@ -8,6 +8,7 @@ import { BinNavigationProvider } from './components/BinNavigation';
 import Home from './pages/Home';
 import Media from './pages/Media';
 import Butt from './pages/Butt';
+import Trash from './pages/Trash';
 
 const App = () => (
     <BinNavigationProvider>
@@ -17,6 +18,7 @@ const App = () => (
                     <Route path='/' element={<Home />} />
                     <Route path='/media' element={<Media />} />
                     <Route path='/butt' element={<Butt />} />
+                    <Route path='/trash' element={<Trash />} />
                 </Route>
             </Routes>
         </HashRouter>

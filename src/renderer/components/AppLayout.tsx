@@ -7,6 +7,7 @@ const AppLayout = () => (
             <NavLink to={'/'}>home</NavLink>
             <NavLink to={'/media'}>Media</NavLink>
             <NavLink to={'/butt'}>Butt</NavLink>
+            <NavLink to={'/trash'}>Trash</NavLink>
         </nav>
         <br />
         <Outlet />

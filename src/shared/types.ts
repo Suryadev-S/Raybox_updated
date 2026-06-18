@@ -115,3 +115,11 @@ export type IngestInputOptions = {
         duplicateStrategy?: DuplicateStrategy;
     };
 }
+
+export type DeletedItem = {
+    id: string
+    name: string
+    recordType: "file" | "bin"
+    ancestor_path: string
+    deleted_at: string
+};

@@ -12,4 +12,6 @@ export const IPC = {
     PICK_FILE: "pick-file",
     DELETE_BIN: "delete-bin",
     DELETE_FILE: "delete-file",
+    PURGE: "purge",
+    GET_DELETED: "get-deleted",
 } as const;
