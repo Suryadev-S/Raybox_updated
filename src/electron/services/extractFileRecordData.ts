@@ -1,15 +1,17 @@
 import fs from "fs/promises"
 import path from "path"
-import crypto from "crypto"
 
 import sharp from "sharp"
+import { BinRecordData, FileRecordData } from "@shared/types"
 
-import type { BinRecordData, FileRecordData }
-    from "./types"
-import { getRootBin } from "./db/getRootBin"
+// import type { BinRecordData, FileRecordData }
+//     from "./types"
+// import { getRootBin } from "./db/getRootBin"
 
 type ExtractFileRecordInput = {
+    id: string
     sourcePath: string
+    logicalName: string
 
     relativePath: string
 
@@ -26,7 +28,9 @@ type ExtractFileRecordInput = {
 }
 
 export async function extractFileRecordData({
+    id,
     sourcePath,
+    logicalName,
     relativePath,
     absolutePath,
     checksum,
@@ -68,11 +72,13 @@ export async function extractFileRecordData({
     }
 
     return {
-        id: crypto.randomUUID(),
+        id,
 
         parent_bin_id: bin.id,
 
-        name: filename,
+        original_name: filename,
+
+        file_name: logicalName,
 
         storage_path: relativePath,
 

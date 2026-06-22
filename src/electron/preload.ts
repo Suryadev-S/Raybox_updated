@@ -16,6 +16,8 @@ contextBridge.exposeInMainWorld("store", {
   deleteFile: (fileId: string) => ipcRenderer.invoke(IPC.DELETE_FILE, fileId),
   purge: () => ipcRenderer.invoke(IPC.PURGE),
   getDeleted: () => ipcRenderer.invoke(IPC.GET_DELETED),
+  renameFile: (fileId: string, newName: string) => ipcRenderer.invoke(IPC.RENAME_FILE, fileId, newName),
+  renameBin: (binId: string, newName: string) => ipcRenderer.invoke(IPC.RENAME_BIN, binId, newName),
   test: () => ipcRenderer.invoke("test"),
 })
 

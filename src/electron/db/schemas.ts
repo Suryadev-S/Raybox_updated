@@ -29,7 +29,11 @@ CREATE TABLE IF NOT EXISTS files (
         REFERENCES bins(id)
         ON DELETE CASCADE,
 
-    name TEXT NOT NULL,
+    -- Immutable name from the original imported file
+    original_name TEXT NOT NULL,
+
+    -- User-controlled logical/display name
+    file_name TEXT NOT NULL,
 
     storage_path TEXT NOT NULL,
     ancestor_path TEXT NOT NULL,
@@ -62,7 +66,7 @@ CREATE TABLE IF NOT EXISTS files (
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at DATETIME,
 
-    UNIQUE(parent_bin_id, name)
+    UNIQUE(parent_bin_id, file_name)
 );
 
 CREATE INDEX IF NOT EXISTS idx_files_parent_bin_id

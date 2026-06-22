@@ -1,16 +1,12 @@
 import { useBinNavigation } from '@renderer/components/BinNavigation'
 import CreateBin from '@renderer/components/CreateBin'
 import IngestButton from '@renderer/components/IngestButton'
+import RenameItemButton from '@renderer/components/RenameItem'
 import { Button } from '@renderer/components/ui/button'
 import { Checkbox } from '@renderer/components/ui/checkbox'
-import { BinRecordData, FileRecordData } from '@shared/types'
+import { BinRecordData, FileRecordData, SelectedItem } from '@shared/types'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-
-type SelectedItem = {
-    itemType: 'bin' | 'file'
-    data: BinRecordData | FileRecordData
-}
 
 export default function Media() {
     const { navStack, setNavStack } = useBinNavigation();
@@ -72,6 +68,18 @@ export default function Media() {
                 >
                     Delete
                 </Button>
+                <br />
+                <br />
+                <RenameItemButton
+                    selectedItem={selection}
+                    onRenameSuccess={() => {
+                        loadBin(
+                            navStack[
+                                navStack.length - 1
+                            ].id
+                        )
+                    }}
+                />
             </h1>
             <h2>{`${navStack[navStack.length - 1].ancestor_path}/${navStack[navStack.length - 1].name}`.replace(/\/+/g, "/")}</h2>
             <div>
@@ -119,7 +127,7 @@ export default function Media() {
                         <div
                             className="rounded border px-2 py-1"
                         >
-                            📄 {file.name}
+                            📄 {file.file_name}
                         </div>
                     </div>
                 ))}

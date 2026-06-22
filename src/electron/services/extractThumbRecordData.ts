@@ -2,9 +2,8 @@ import fs from "fs/promises"
 import crypto from "crypto"
 
 import sharp from "sharp"
+import { ThumbRecordData } from "@shared/types"
 
-import type { ThumbRecordData }
-    from "./types"
 
 type ExtractThumbInput = {
     fileId: string

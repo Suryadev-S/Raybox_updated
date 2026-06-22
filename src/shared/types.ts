@@ -45,7 +45,11 @@ export type FileRecordData = {
 
     parent_bin_id: string
 
-    name: string
+    // name: string
+
+    original_name: string
+
+    file_name: string
 
     storage_path: string
     ancestor_path: string
@@ -123,3 +127,8 @@ export type DeletedItem = {
     ancestor_path: string
     deleted_at: string
 };
+
+export type SelectedItem = {
+    itemType: 'bin' | 'file'
+    data: BinRecordData | FileRecordData
+}

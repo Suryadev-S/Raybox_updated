@@ -14,15 +14,15 @@ import { ipcMain } from "electron";
 import { IPC } from "@shared/ipc";
 
 function generateDuplicateName(
-    originalName: string
+    name: string
 ): string {
-    const ext = path.extname(originalName);
+    const ext = path.extname(name);
     const base = path.basename(
-        originalName,
+        name,
         ext
     );
 
-    return `${base.slice(0, base.lastIndexOf('_'))}_copy_${Date.now()}${ext}`;
+    return `${base}_copy${ext}`;
 }
 
 function findThumbByFileId(id: string): ThumbRecordData {
@@ -70,8 +70,8 @@ async function createDuplicateReference(
 
         parent_bin_id: bin.id,
 
-        name: generateDuplicateName(
-            dupeFile.name,
+        file_name: generateDuplicateName(
+            dupeFile.file_name,
         ),
         ancestor_path: `${bin.ancestor_path}/${bin.name}`.replace(/\/+/g, "/")
     };
@@ -161,7 +161,7 @@ export async function ingestFile_v2({
                                 dupeFile.id,
 
                             name:
-                                dupeFile.name,
+                                dupeFile.file_name,
 
                             checksum:
                                 dupeFile.checksum,
@@ -233,14 +233,16 @@ async function ingestNewFile(
 
         // STEP 5
         // Generate names
+        const id = crypto.randomUUID();
         const extension = path.extname(filePath)
         const baseName = path.basename(
             filePath,
             extension,
         )
         const timestamp = Date.now();
-        const originalFileName = `${baseName}_${timestamp}${extension}`;
-        const thumbnailFileName = `${baseName}_thumb_${timestamp}.jpg`;
+        const originalFileName = `${id}_${timestamp}${extension}`;
+        const logicalFileName = `${baseName}${extension}`;
+        const thumbnailFileName = `${id}_thumb_${timestamp}.jpg`;
 
         // STEP 3
         // Create category folder
@@ -320,7 +322,9 @@ async function ingestNewFile(
         // Extract DB record data
         const fileRecord =
             await extractFileRecordData({
+                id,
                 sourcePath: filePath,
+                logicalName: logicalFileName,
                 relativePath: path.join(categoryFolderPath_relative, originalFileName),
                 absolutePath: originalFilePath,
                 checksum: fileHash,

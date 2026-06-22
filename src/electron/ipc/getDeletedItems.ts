@@ -20,7 +20,7 @@ export function getDeletedItems(): DeletedItem[] {
 
         SELECT
             id,
-            name,
+            file_name,
             ancestor_path,
             'file' AS recordType,
             deleted_at

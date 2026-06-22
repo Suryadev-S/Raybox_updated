@@ -11,6 +11,8 @@ import './deleteFile';
 import './deleteBin';
 import './purgeDeletedAssets';
 import './getDeletedItems';
+import './renameBin';
+import './renameFile'
 
 ipcMain.handle("pick-file", async () => {
     const result = await dialog.showOpenDialog({

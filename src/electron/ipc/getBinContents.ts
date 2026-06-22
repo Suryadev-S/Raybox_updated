@@ -20,7 +20,7 @@ export function getBinContents(binId: string) {
         FROM files
         WHERE parent_bin_id = ?
         AND deleted_at IS NULL
-        ORDER BY name
+        ORDER BY file_name
     `).all(binId)
 
     return {

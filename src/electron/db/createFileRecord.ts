@@ -4,18 +4,20 @@ import { getDb } from "./database"
 
 
 export function createFileRecord(
-    fileRecord: FileRecordData,
+  fileRecord: FileRecordData,
 ) {
-    const db = getDb()
+  const db = getDb()
 
 
-    const stmt = db.prepare(`
+  const stmt = db.prepare(`
     INSERT INTO files (
       id,
 
       parent_bin_id,
 
-      name,
+      original_name,
+
+      file_name,
 
       storage_path,
       ancestor_path,
@@ -38,7 +40,9 @@ export function createFileRecord(
 
       @parent_bin_id,
 
-      @name,
+      @original_name,
+
+      @file_name,
 
       @storage_path,
       @ancestor_path,
@@ -58,7 +62,7 @@ export function createFileRecord(
     )
   `)
 
-    stmt.run(fileRecord)
+  stmt.run(fileRecord)
 
-    return fileRecord
+  return fileRecord
 }
